@@ -8,16 +8,41 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+import CoreLocation
+import MapKit
 
+class ViewController: UIViewController, CLLocationManagerDelegate {
+
+    var latitudeRecorded :String?
+    var longitudeRecorded :String?
+    var distanceRecorded :Int?
+    
+    var handlerLocation = CLLocationManager()
+    
+    @IBOutlet weak var mapWidget: MKMapView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        handlerLocation.delegate = self
+        handlerLocation.desiredAccuracy = kCLLocationAccuracyBest
+        handlerLocation.requestWhenInUseAuthorization()
+    }
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedWhenInUse{
+            handlerLocation.startUpdatingLocation()
+        }else{
+            handlerLocation.stopUpdatingLocation()
+        }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print(String(manager.location!.coordinate.latitude))
+        print(String(manager.location!.coordinate.longitude))
+    }
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        print("Error")
     }
 
 
