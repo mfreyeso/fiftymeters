@@ -19,30 +19,70 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsBuildings="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="15e-45-dIe">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="0.0" y="20" width="400" height="772"/>
-                                </variation>
                             </mapView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iO4-jg-196">
+                                <rect key="frame" x="-60" y="-14" width="121" height="29"/>
+                                <segments>
+                                    <segment title="Normal"/>
+                                    <segment title="Satellite"/>
+                                    <segment title="Hybrid"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeTypeMap:" destination="BYZ-38-t0r" eventType="valueChanged" id="ym3-N5-py6"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="iO4-jg-196" firstAttribute="centerX" secondItem="15e-45-dIe" secondAttribute="centerX" id="2ag-3d-dEn"/>
+                            <constraint firstItem="iO4-jg-196" firstAttribute="leading" secondItem="15e-45-dIe" secondAttribute="leading" id="BXG-ab-W9c">
+                                <variation key="heightClass=regular-widthClass=compact" constant="73"/>
+                            </constraint>
+                            <constraint firstItem="iO4-jg-196" firstAttribute="top" secondItem="15e-45-dIe" secondAttribute="bottom" constant="24" id="Vda-zc-tcC"/>
+                            <constraint firstAttribute="trailing" secondItem="15e-45-dIe" secondAttribute="trailing" id="XCR-CM-3sM"/>
+                            <constraint firstItem="15e-45-dIe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="aEE-kj-Bnu"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="iO4-jg-196" secondAttribute="bottom" constant="39" id="jW3-0F-FE9"/>
+                            <constraint firstItem="15e-45-dIe" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="oOI-rq-p9i"/>
+                        </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="15e-45-dIe"/>
+                                <exclude reference="iO4-jg-196"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="XCR-CM-3sM"/>
+                                <exclude reference="aEE-kj-Bnu"/>
+                                <exclude reference="oOI-rq-p9i"/>
+                                <exclude reference="2ag-3d-dEn"/>
+                                <exclude reference="BXG-ab-W9c"/>
+                                <exclude reference="Vda-zc-tcC"/>
+                                <exclude reference="jW3-0F-FE9"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <include reference="15e-45-dIe"/>
+                                <include reference="iO4-jg-196"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="XCR-CM-3sM"/>
+                                <include reference="aEE-kj-Bnu"/>
+                                <include reference="oOI-rq-p9i"/>
+                                <include reference="2ag-3d-dEn"/>
+                                <include reference="BXG-ab-W9c"/>
+                                <include reference="Vda-zc-tcC"/>
+                                <include reference="jW3-0F-FE9"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
                         <outlet property="mapWidget" destination="15e-45-dIe" id="YYv-fq-LA3"/>
+                        <outlet property="typeSegmentControl" destination="iO4-jg-196" id="Wei-zx-fit"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="271.5" y="331.5"/>
+            <point key="canvasLocation" x="583.5" y="333.75"/>
         </scene>
     </scenes>
 </document>
