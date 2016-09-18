@@ -19,11 +19,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         case Hybrid = 2
     }
     
-    var latitudeRecorded :String?
-    var longitudeRecorded :String?
-    var distanceRecorded :Int?
-    
-    
+    var totalDistance :Float = 0
+    var initLocation :CLLocation?
     
     var handlerLocation = CLLocationManager()
     
@@ -44,7 +41,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         handlerLocation.delegate = self
         handlerLocation.desiredAccuracy = kCLLocationAccuracyBest
         handlerLocation.requestWhenInUseAuthorization()
-        initLocation()
     }
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
@@ -56,17 +52,38 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             mapWidget.showsUserLocation = false
         }
     }
-
+    
+    
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        var point = CLLocationCoordinate2D()
-        point.latitude = manager.location!.coordinate.latitude
-        point.longitude = manager.location!.coordinate.longitude
-        print(point.longitude)
-        print(point.latitude)
+        let actualLocation: CLLocation = manager.location!
+        if initLocation == nil{
+            initLocation = actualLocation
+            initMapLocation(initLocation!)
+        }
+        let distanceMeters = actualLocation.distanceFromLocation(initLocation!)
+        if distanceMeters > 50.0{
+            totalDistance += Float(distanceMeters)
+            addAnotationDistance(actualLocation)
+            initLocation = actualLocation
+        }
+
     }
     
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print("Error")
+        let alert = UIAlertController(title: "Error", message: "Your location isn't available now", preferredStyle: .Alert)
+        let approveAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alert.addAction(approveAction)
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func addAnotationDistance(pointLocation: CLLocation){
+        let pin = MKPointAnnotation()
+        let latitude :String = "Lat: " + String(format: "%.4f", pointLocation.coordinate.latitude)
+        let longitude :String = "Long: " + String(format: "%.4f", pointLocation.coordinate.longitude)
+        pin.title = latitude + " " + longitude
+        pin.subtitle = "Distance: " + String(format: "%.2f", totalDistance)
+        pin.coordinate = pointLocation.coordinate
+        mapWidget.addAnnotation(pin)
     }
     
     func mapView(mapView: MKMapView, didUpdateUserLocation
@@ -74,10 +91,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             mapWidget.centerCoordinate = userLocation.location!.coordinate
     }
     
-    func initLocation(){
-        var point = CLLocationCoordinate2D()
-        point = mapWidget.userLocation.coordinate
-        let region = MKCoordinateRegionMakeWithDistance(point, 5000, 5000)
+    func initMapLocation(initLocation :CLLocation){
+        let region = MKCoordinateRegionMakeWithDistance(initLocation.coordinate, 500, 500)
         mapWidget.setRegion(region, animated: true)
     }
 
